@@ -1,51 +1,60 @@
-#pragma once
+#ifndef _SRC_S21_MATRIX_OOP_H
+#define _SRC_S21_MATRIX_OOP_H
 
 #include <cmath>
 #include <iostream>
+
 class S21Matrix {
- private:
-  int rows, columns;
-  double** matrix;
-
-  void copy_matrices(const S21Matrix& other);
-  void copy_matrices(double** _matrix, int rows, int cols, int row_i,
-                     int col_j);
-  double small_determ();
-  S21Matrix minor(int row_index, int col_index);
-  void destroy();
-  void allocator(int _rows, int _cols);
-
  public:
   S21Matrix();
-  S21Matrix(int _rows, int _columns);
+  S21Matrix(int rows, int cols);
   S21Matrix(const S21Matrix& other);
   S21Matrix(S21Matrix&& other);
   ~S21Matrix();
 
-  bool eq_matrix(const S21Matrix& other);
-  void sum_matrix(const S21Matrix& other);
-  void sub_matrix(const S21Matrix& other);
-  void mul_number(const double num);
-  void mul_matrix(const S21Matrix& other);
-  S21Matrix transpose();
-  S21Matrix calc_complements();
-  double determinant();
-  S21Matrix inverse_matrix();
+  bool EqMatrix(const S21Matrix& other);
+  void SumMatrix(const S21Matrix& other);
+  void SubMatrix(const S21Matrix& other);
+  void MulNumber(const double num);
+  void MulMatrix(const S21Matrix& other);
+  S21Matrix Transpose();
+  S21Matrix CalcComplements();
+  double Determinant();
+  S21Matrix InverseMatrix();
 
-  void setRows(int _rows);
-  void setColumns(int columns);
-  void setValue(double value, int i, int j);
-  int getRows();
-  int getColumns();
-  double getValue(int i, int j);
+  void set_rows(int rows);
+  void set_columns(int columns);
+  void set_value(double value, int i, int j);
+  int get_rows();
+  int get_columns();
+  double get_value(int i, int j);
 
-  friend S21Matrix operator+(const S21Matrix& current, const S21Matrix& other);
-  friend S21Matrix operator-(const S21Matrix& current, const S21Matrix& other);
-  friend S21Matrix operator*(const S21Matrix& current, const S21Matrix& other);
   S21Matrix& operator+=(const S21Matrix& other);
   S21Matrix& operator-=(const S21Matrix& other);
   S21Matrix& operator*=(const S21Matrix& other);
   bool operator==(const S21Matrix& other);
   S21Matrix& operator=(const S21Matrix& other);
+  S21Matrix operator=(S21Matrix&& other) = delete;
   double operator()(int i, int j);
+  
+ private:
+  int rows_, columns_;
+  double** matrix_;
+
+ private:
+  void CopyMatrices(const S21Matrix& other);
+  void CopyMatrices(double** matrix, int rows, int cols, int row_i,
+                     int col_j);
+  double SmallDeterm();
+  S21Matrix Minor(int row_index, int col_index);
+  void Destroy();
+  void Allocator(int rows, int cols);
+  bool IsDifferentSize(const S21Matrix& other);
+  bool IsIndicesNotInRange(int i, int j);
 };
+
+S21Matrix operator+ (const S21Matrix& current, const S21Matrix& other);
+S21Matrix operator-(const S21Matrix& current, const S21Matrix& other);
+S21Matrix operator*(const S21Matrix& current, const S21Matrix& other);
+
+#endif  // _SRC_S21_MATRIX_OOP_H
