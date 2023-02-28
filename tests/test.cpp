@@ -1,4 +1,4 @@
-#include "../src/s21_matrix_oop.h"
+#include "../src/matrix.h"
 #include "gtest/gtest.h"
 
 TEST(constructMatrix, test1) {
@@ -6,10 +6,10 @@ TEST(constructMatrix, test1) {
   const int col = 3;
   double first[row][col] = {
       {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
-  S21Matrix firstMatrix = S21Matrix();
+  TL::Matrix firstMatrix = TL::Matrix();
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_EQ(first[i][j], firstMatrix.getValue(i, j));
+      EXPECT_EQ(first[i][j], firstMatrix.get_value(i, j));
     }
   }
 }
@@ -22,12 +22,12 @@ TEST(constructMatrix, test2) {
                             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-  S21Matrix firstMatrix = S21Matrix(10, 10);
-  EXPECT_EQ(row, firstMatrix.getRows());
-  EXPECT_EQ(col, firstMatrix.getColumns());
+  TL::Matrix firstMatrix = TL::Matrix(10, 10);
+  EXPECT_EQ(row, firstMatrix.get_rows());
+  EXPECT_EQ(col, firstMatrix.get_columns());
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_EQ(first[i][j], firstMatrix.getValue(i, j));
+      EXPECT_EQ(first[i][j], firstMatrix.get_value(i, j));
     }
   }
 }
@@ -40,18 +40,18 @@ TEST(constructMatrix, test3) {
                             {2.55, 3.55, 2.55, 3.55, 2.55},
                             {2.55, 3.55, 2.55, 3.55, 2.55},
                             {2.55, 3.55, 2.55, 3.55, 2.55}};
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix result = S21Matrix(firstMatrix);
-  EXPECT_EQ(row, result.getRows());
-  EXPECT_EQ(col, result.getColumns());
+  TL::Matrix result = TL::Matrix(firstMatrix);
+  EXPECT_EQ(row, result.get_rows());
+  EXPECT_EQ(col, result.get_columns());
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_EQ(first[i][j], result.getValue(i, j));
+      EXPECT_EQ(first[i][j], result.get_value(i, j));
     }
   }
 }
@@ -64,22 +64,20 @@ TEST(constructMatrix, test4) {
                             {2.55, 3.55, 2.55, 3.55, 2.55},
                             {2.55, 3.55, 2.55, 3.55, 2.55},
                             {2.55, 3.55, 2.55, 3.55, 2.55}};
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix result = std::move(firstMatrix);
-  EXPECT_EQ(row, result.getRows());
-  EXPECT_EQ(col, result.getColumns());
+  TL::Matrix result = std::move(firstMatrix);
+  EXPECT_EQ(row, result.get_rows());
+  EXPECT_EQ(col, result.get_columns());
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_EQ(first[i][j], result.getValue(i, j));
+      EXPECT_EQ(first[i][j], result.get_value(i, j));
     }
   }
-  EXPECT_EQ(0, firstMatrix.getRows());
-  EXPECT_EQ(0, firstMatrix.getColumns());
 }
 
 TEST(sumMatrices, test1) {
@@ -100,22 +98,22 @@ TEST(sumMatrices, test1) {
                             {5.56, 5.56, 5.56, 5.56, 5.56},
                             {5.56, 5.56, 5.56, 5.56, 5.56},
                             {5.56, 5.56, 5.56, 5.56, 5.56}};
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(row, col);
+  TL::Matrix secondMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
-  firstMatrix.sum_matrix(secondMatrix);
+  firstMatrix.SumMatrix(secondMatrix);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_NEAR(third[i][j], firstMatrix.getValue(i, j), 0.0000000001);
+      EXPECT_NEAR(third[i][j], firstMatrix.get_value(i, j), 0.0000000001);
     }
   }
 }
@@ -141,22 +139,22 @@ TEST(sumMatrices, test2) {
                             {0, 0, 0, 0, 0},
                             {0, 0, 0, 0, 0}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(row, col);
+  TL::Matrix secondMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
-  firstMatrix.sum_matrix(secondMatrix);
+  firstMatrix.SumMatrix(secondMatrix);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_NEAR(third[i][j], firstMatrix.getValue(i, j), 0.0000000001);
+      EXPECT_NEAR(third[i][j], firstMatrix.get_value(i, j), 0.0000000001);
     }
   }
 }
@@ -182,22 +180,22 @@ TEST(subMatrices, test1) {
       {-0.789643013, -1.123434568, -1.3322977, -1.900743013, -0.012334568},
       {-0.789643013, -1.123434568, -1.3322977, -1.900743013, -0.012334568}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(row, col);
+  TL::Matrix secondMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
-  firstMatrix.sub_matrix(secondMatrix);
+  firstMatrix.SubMatrix(secondMatrix);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_NEAR(firstMatrix.getValue(i, j), third[i][j], 0.0000000001);
+      EXPECT_NEAR(firstMatrix.get_value(i, j), third[i][j], 0.0000000001);
     }
   }
 }
@@ -217,19 +215,19 @@ TEST(eqMatrices, test1) {
                              {1.1111, 2.2222, 3.3333, 2.2222, 1.1111},
                              {1.1111, 2.2222, 3.3333, 2.2222, 1.1111}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(row, col);
+  TL::Matrix secondMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
-  EXPECT_FALSE(firstMatrix.eq_matrix(secondMatrix));
+  EXPECT_FALSE(firstMatrix.EqMatrix(secondMatrix));
 }
 
 TEST(eqMatrices, test2) {
@@ -246,19 +244,19 @@ TEST(eqMatrices, test2) {
                              {1.1111, 2.2222, 3.3333, 2.2222, 1.1111},
                              {1.1111, 2.2222, 3.3333, 2.2222, 1.1111}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(row, col);
+  TL::Matrix secondMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
-  EXPECT_TRUE(firstMatrix.eq_matrix(secondMatrix));
+  EXPECT_TRUE(firstMatrix.EqMatrix(secondMatrix));
 }
 
 TEST(multNumber, test1) {
@@ -279,18 +277,18 @@ TEST(multNumber, test1) {
       {0.0011111, 0.0022222, 0.0033333, 0.0022222, 0.0011111},
       {0.0011111, 0.0022222, 0.0033333, 0.0022222, 0.0011111}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
 
-  firstMatrix.mul_number(number);
+  firstMatrix.MulNumber(number);
 
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_NEAR(third[i][j], firstMatrix.getValue(i, j), 0.0000000001);
+      EXPECT_NEAR(third[i][j], firstMatrix.get_value(i, j), 0.0000000001);
     }
   }
 }
@@ -309,22 +307,22 @@ TEST(mulMatrices, test1) {
                              {6, 12, 18, 24},
                              {6, 12, 18, 24}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(_row, _col);
+  TL::Matrix secondMatrix = TL::Matrix(_row, _col);
   for (int i = 0; i < _row; i++) {
     for (int j = 0; j < _col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
-  firstMatrix.mul_matrix(secondMatrix);
+  firstMatrix.MulMatrix(secondMatrix);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < _col; j++) {
-      EXPECT_EQ(third[i][j], firstMatrix.getValue(i, j));
+      EXPECT_EQ(third[i][j], firstMatrix.get_value(i, j));
     }
   }
 }
@@ -335,17 +333,17 @@ TEST(transMatrices, test1) {
   double first[row][col] = {{1, 2, 3}, {1, 2, 3}, {1, 2, 3}};
   double third[row][col] = {{1, 1, 1}, {2, 2, 2}, {3, 3, 3}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
 
-  S21Matrix result = S21Matrix(firstMatrix.transpose());
+  TL::Matrix result = TL::Matrix(firstMatrix.Transpose());
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_EQ(third[i][j], result.getValue(i, j));
+      EXPECT_EQ(third[i][j], result.get_value(i, j));
     }
   }
 }
@@ -356,16 +354,16 @@ TEST(calcCompl, test1) {
   double first[row][col] = {{1, 2, 3}, {0, 4, 2}, {5, 2, 1}};
   double third[row][col] = {{0, 10, -20}, {4, -14, 8}, {-8, -2, 4}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix result = S21Matrix(firstMatrix.calc_complements());
+  TL::Matrix result = TL::Matrix(firstMatrix.CalcComplements());
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_EQ(third[i][j], result.getValue(i, j));
+      EXPECT_EQ(third[i][j], result.get_value(i, j));
     }
   }
 }
@@ -376,21 +374,21 @@ TEST(calcCompl, test2) {
   double first[row][col] = {{1, 2}, {0, 4}};
   double third[row][col] = {{4, 0}, {-2, 1}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix result = S21Matrix(firstMatrix.calc_complements());
+  TL::Matrix result = TL::Matrix(firstMatrix.CalcComplements());
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_EQ(third[i][j], result.getValue(i, j));
+      EXPECT_EQ(third[i][j], result.get_value(i, j));
     }
   }
 }
 
-TEST(determinant, test1) {
+TEST(Determinant, test1) {
   const int row = 5;
   const int col = 5;
   double first[row][col] = {{1, 2, 1, 4, 2},
@@ -401,29 +399,29 @@ TEST(determinant, test1) {
 
   double det = 21;
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  EXPECT_EQ(21, firstMatrix.determinant());
+  EXPECT_EQ(21, firstMatrix.Determinant());
 }
 
-TEST(determinant, test2) {
+TEST(Determinant, test2) {
   const int row = 2;
   const int col = 2;
   double first[row][col] = {{1, 2}, {0, 4}};
 
   double det = 4;
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  EXPECT_EQ(4, firstMatrix.determinant());
+  EXPECT_EQ(4, firstMatrix.Determinant());
 }
 
 TEST(invertMatrix, test1) {
@@ -432,16 +430,16 @@ TEST(invertMatrix, test1) {
   double first[row][col] = {{2, 5, 7}, {6, 3, 4}, {5, -2, -3}};
   double third[row][col] = {{1, -1, 1}, {-38, 41, -34}, {27, -29, 24}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix result = S21Matrix(firstMatrix.inverse_matrix());
+  TL::Matrix result = TL::Matrix(firstMatrix.InverseMatrix());
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_EQ(third[i][j], result.getValue(i, j));
+      EXPECT_EQ(third[i][j], result.get_value(i, j));
     }
   }
 }
@@ -452,16 +450,16 @@ TEST(invertMatrix, test2) {
   double first[row][col] = {{2}};
   double third[row][col] = {{0.5}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix result = S21Matrix(firstMatrix.inverse_matrix());
+  TL::Matrix result = TL::Matrix(firstMatrix.InverseMatrix());
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_EQ(third[i][j], result.getValue(i, j));
+      EXPECT_EQ(third[i][j], result.get_value(i, j));
     }
   }
 }
@@ -472,16 +470,16 @@ TEST(invertMatrix, test3) {
   double first[row][col] = {{2, -3}, {1, 1}};
   double third[row][col] = {{0.2, 0.6}, {-0.2, 0.4}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix result = S21Matrix(firstMatrix.inverse_matrix());
+  TL::Matrix result = TL::Matrix(firstMatrix.InverseMatrix());
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_NEAR(third[i][j], result.getValue(i, j), 0.0000000001);
+      EXPECT_NEAR(third[i][j], result.get_value(i, j), 0.0000000001);
     }
   }
 }
@@ -504,22 +502,22 @@ TEST(plus, test1) {
                             {5.56, 5.56, 5.56, 5.56, 5.56},
                             {5.56, 5.56, 5.56, 5.56, 5.56},
                             {5.56, 5.56, 5.56, 5.56, 5.56}};
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(row, col);
+  TL::Matrix secondMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
-  S21Matrix result = firstMatrix + secondMatrix;
+  TL::Matrix result = firstMatrix + secondMatrix;
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_NEAR(third[i][j], result.getValue(i, j), 0.0000000001);
+      EXPECT_NEAR(third[i][j], result.get_value(i, j), 0.0000000001);
     }
   }
 }
@@ -545,22 +543,22 @@ TEST(minus, test1) {
       {-0.789643013, -1.123434568, -1.3322977, -1.900743013, -0.012334568},
       {-0.789643013, -1.123434568, -1.3322977, -1.900743013, -0.012334568}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(row, col);
+  TL::Matrix secondMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
-  S21Matrix result = firstMatrix - secondMatrix;
+  TL::Matrix result = firstMatrix - secondMatrix;
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_NEAR(result.getValue(i, j), third[i][j], 0.0000000001);
+      EXPECT_NEAR(result.get_value(i, j), third[i][j], 0.0000000001);
     }
   }
 }
@@ -579,22 +577,22 @@ TEST(multiplication, test1) {
                              {6, 12, 18, 24},
                              {6, 12, 18, 24}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(_row, _col);
+  TL::Matrix secondMatrix = TL::Matrix(_row, _col);
   for (int i = 0; i < _row; i++) {
     for (int j = 0; j < _col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
-  S21Matrix result = firstMatrix * secondMatrix;
+  TL::Matrix result = firstMatrix * secondMatrix;
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < _col; j++) {
-      EXPECT_EQ(third[i][j], result.getValue(i, j));
+      EXPECT_EQ(third[i][j], result.get_value(i, j));
     }
   }
 }
@@ -617,22 +615,22 @@ TEST(Increase, test1) {
                             {5.56, 5.56, 5.56, 5.56, 5.56},
                             {5.56, 5.56, 5.56, 5.56, 5.56},
                             {5.56, 5.56, 5.56, 5.56, 5.56}};
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(row, col);
+  TL::Matrix secondMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
   firstMatrix += secondMatrix;
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_NEAR(third[i][j], firstMatrix.getValue(i, j), 0.0000000001);
+      EXPECT_NEAR(third[i][j], firstMatrix.get_value(i, j), 0.0000000001);
     }
   }
 }
@@ -658,22 +656,22 @@ TEST(Decrease, test1) {
       {-0.789643013, -1.123434568, -1.3322977, -1.900743013, -0.012334568},
       {-0.789643013, -1.123434568, -1.3322977, -1.900743013, -0.012334568}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(row, col);
+  TL::Matrix secondMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
   firstMatrix -= secondMatrix;
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_NEAR(firstMatrix.getValue(i, j), third[i][j], 0.0000000001);
+      EXPECT_NEAR(firstMatrix.get_value(i, j), third[i][j], 0.0000000001);
     }
   }
 }
@@ -692,22 +690,22 @@ TEST(multIncrease, test1) {
                              {6, 12, 18, 24},
                              {6, 12, 18, 24}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(_row, _col);
+  TL::Matrix secondMatrix = TL::Matrix(_row, _col);
   for (int i = 0; i < _row; i++) {
     for (int j = 0; j < _col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
   firstMatrix *= secondMatrix;
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < _col; j++) {
-      EXPECT_EQ(third[i][j], firstMatrix.getValue(i, j));
+      EXPECT_EQ(third[i][j], firstMatrix.get_value(i, j));
     }
   }
 }
@@ -727,16 +725,16 @@ TEST(Equal, test1) {
                              {1.1111, 2.2222, 3.3333, 2.2222, 1.1111},
                              {1.1111, 2.2222, 3.3333, 2.2222, 1.1111}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(row, col);
+  TL::Matrix secondMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
   EXPECT_FALSE(firstMatrix == secondMatrix);
@@ -756,16 +754,16 @@ TEST(Equal, test2) {
                              {1.1111, 2.2222, 3.3333, 2.2222, 1.1111},
                              {1.1111, 2.2222, 3.3333, 2.2222, 1.1111}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(row, col);
+  TL::Matrix secondMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
   EXPECT_TRUE(firstMatrix == secondMatrix);
@@ -780,16 +778,16 @@ TEST(Copying, test1) {
                             {1.1111, 2.2222, 3.3333, 2.2222, 1.1111},
                             {1.1111, 2.2222, 3.3333, 2.2222, 1.1111}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix result = firstMatrix;
+  TL::Matrix result = firstMatrix;
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      EXPECT_NEAR(first[i][j], result.getValue(i, j), 0.0000000001);
+      EXPECT_NEAR(first[i][j], result.get_value(i, j), 0.0000000001);
     }
   }
 }
@@ -803,10 +801,10 @@ TEST(Iterator, test1) {
                             {1.1111, 2.2222, 3.3333, 2.2222, 1.1111},
                             {1.1111, 2.2222, 3.3333, 2.2222, 1.1111}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
   for (int i = 0; i < row; i++) {
@@ -816,7 +814,7 @@ TEST(Iterator, test1) {
   }
 }
 
-TEST(SetRows, test1) {
+TEST(set_rows, test1) {
   const int row = 5;
   const int col = 5;
   double first[row][col] = {{1.1111, 2.2222, 3.3333, 2.2222, 1.1111},
@@ -825,10 +823,10 @@ TEST(SetRows, test1) {
                             {1.1111, 2.2222, 3.3333, 2.2222, 1.1111},
                             {1.1111, 2.2222, 3.3333, 2.2222, 1.1111}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
   const int new_row = 10;
@@ -842,7 +840,7 @@ TEST(SetRows, test1) {
                                  {0, 0, 0, 0, 0},
                                  {0, 0, 0, 0, 0},
                                  {0, 0, 0, 0, 0}};
-  firstMatrix.setRows(new_row);
+  firstMatrix.set_rows(new_row);
   for (int i = 0; i < new_row; i++) {
     for (int j = 0; j < col; j++) {
       EXPECT_NEAR(result[i][j], firstMatrix(i, j), 0.0000000001);
@@ -850,7 +848,7 @@ TEST(SetRows, test1) {
   }
 }
 
-TEST(SetRows, test2) {
+TEST(set_rows, test2) {
   const int row = 5;
   const int col = 5;
   double first[row][col] = {{1.1111, 2.2222, 3.3333, 2.2222, 1.1111},
@@ -859,15 +857,15 @@ TEST(SetRows, test2) {
                             {1.1111, 2.2222, 3.3333, 2.2222, 1.1111},
                             {1.1111, 2.2222, 3.3333, 2.2222, 1.1111}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
   const int new_row = 1;
   double result[new_row][col] = {{1.1111, 2.2222, 3.3333, 2.2222, 1.1111}};
-  firstMatrix.setRows(new_row);
+  firstMatrix.set_rows(new_row);
   for (int i = 0; i < new_row; i++) {
     for (int j = 0; j < col; j++) {
       EXPECT_NEAR(result[i][j], firstMatrix(i, j), 0.0000000001);
@@ -875,7 +873,7 @@ TEST(SetRows, test2) {
   }
 }
 
-TEST(SetColumns, test1) {
+TEST(Set_columns, test1) {
   const int row = 5;
   const int col = 5;
   double first[row][col] = {{1.1111, 2.2222, 3.3333, 2.2222, 1.1111},
@@ -884,10 +882,10 @@ TEST(SetColumns, test1) {
                             {1.1111, 2.2222, 3.3333, 2.2222, 1.1111},
                             {1.1111, 2.2222, 3.3333, 2.2222, 1.1111}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
   const int new_col = 10;
@@ -896,7 +894,7 @@ TEST(SetColumns, test1) {
                                  {1.1111, 2.2222, 3.3333, 2.2222, 1.1111, 0, 0, 0, 0, 0},
                                  {1.1111, 2.2222, 3.3333, 2.2222, 1.1111, 0, 0, 0, 0, 0},
                                  {1.1111, 2.2222, 3.3333, 2.2222, 1.1111, 0, 0, 0, 0, 0}};
-  firstMatrix.setColumns(new_col);
+  firstMatrix.set_columns(new_col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < new_col; j++) {
       EXPECT_NEAR(result[i][j], firstMatrix(i, j), 0.0000000001);
@@ -904,7 +902,7 @@ TEST(SetColumns, test1) {
   }
 }
 
-TEST(SetColumns, test2) {
+TEST(Set_columns, test2) {
   const int row = 5;
   const int col = 5;
   double first[row][col] = {{1.1111, 2.2222, 3.3333, 2.2222, 1.1111},
@@ -913,10 +911,10 @@ TEST(SetColumns, test2) {
                             {1.1111, 2.2222, 3.3333, 2.2222, 1.1111},
                             {1.1111, 2.2222, 3.3333, 2.2222, 1.1111}};
 
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
   const int new_col = 1;
@@ -925,7 +923,7 @@ TEST(SetColumns, test2) {
                                 {1.1111},
                                 {1.1111},
                                 {1.1111}};
-  firstMatrix.setColumns(new_col);
+  firstMatrix.set_columns(new_col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < new_col; j++) {
       EXPECT_NEAR(result[i][j], firstMatrix(i, j), 0.0000000001);
@@ -945,23 +943,23 @@ TEST(Except, test1) {
                              {3.01, 2.01, 3.01, 2.01, 3.01},
                              {3.01, 2.01, 3.01, 2.01, 3.01},
                              {3.01, 2.01, 3.01, 2.01, 3.01}};
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(row-1, col);
+  TL::Matrix secondMatrix = TL::Matrix(row-1, col);
   for (int i = 0; i < row-1; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
-  EXPECT_THROW(firstMatrix.sum_matrix(secondMatrix), std::out_of_range);
+  EXPECT_THROW(firstMatrix.SumMatrix(secondMatrix), std::out_of_range);
 }
 
 TEST(Except, test2) {
-  EXPECT_THROW(S21Matrix(-10, 10), std::out_of_range);
+  EXPECT_THROW(TL::Matrix(-10, 10), std::out_of_range);
 }
 
 TEST(Except, test3) {
@@ -976,19 +974,19 @@ TEST(Except, test3) {
                              {3.01, 2.01, 3.01, 2.01, 3.01},
                              {3.01, 2.01, 3.01, 2.01, 3.01},
                              {3.01, 2.01, 3.01, 2.01, 3.01}};
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(row-1, col);
+  TL::Matrix secondMatrix = TL::Matrix(row-1, col);
   for (int i = 0; i < row-1; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
-  EXPECT_THROW(firstMatrix.eq_matrix(secondMatrix), std::out_of_range);
+  EXPECT_THROW(firstMatrix.EqMatrix(secondMatrix), std::out_of_range);
 }
 
 TEST(Except, test4) {
@@ -1003,19 +1001,19 @@ TEST(Except, test4) {
                              {3.01, 2.01, 3.01, 2.01, 3.01},
                              {3.01, 2.01, 3.01, 2.01, 3.01},
                              {3.01, 2.01, 3.01, 2.01, 3.01}};
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(row-1, col);
+  TL::Matrix secondMatrix = TL::Matrix(row-1, col);
   for (int i = 0; i < row-1; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
-  EXPECT_THROW(firstMatrix.sub_matrix(secondMatrix), std::out_of_range);
+  EXPECT_THROW(firstMatrix.SubMatrix(secondMatrix), std::out_of_range);
 }
 
 TEST(Except, test5) {
@@ -1030,19 +1028,19 @@ TEST(Except, test5) {
                              {3.01, 2.01, 3.01, 2.01, 3.01},
                              {3.01, 2.01, 3.01, 2.01, 3.01},
                              {3.01, 2.01, 3.01, 2.01, 3.01}};
-  S21Matrix firstMatrix = S21Matrix(row, col);
+  TL::Matrix firstMatrix = TL::Matrix(row, col);
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < col; j++) {
-      firstMatrix.setValue(first[i][j], i, j);
+      firstMatrix.set_value(first[i][j], i, j);
     }
   }
-  S21Matrix secondMatrix = S21Matrix(row-1, col);
+  TL::Matrix secondMatrix = TL::Matrix(row-1, col);
   for (int i = 0; i < row-1; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
-  EXPECT_THROW(firstMatrix.mul_matrix(secondMatrix), std::out_of_range);
+  EXPECT_THROW(firstMatrix.MulMatrix(secondMatrix), std::out_of_range);
 }
 
 TEST(Except, test6) {
@@ -1052,13 +1050,13 @@ TEST(Except, test6) {
                              {3.01, 2.01, 3.01, 2.01, 3.01},
                              {3.01, 2.01, 3.01, 2.01, 3.01},
                              {3.01, 2.01, 3.01, 2.01, 3.01}};
-  S21Matrix secondMatrix = S21Matrix(row-1, col);
+  TL::Matrix secondMatrix = TL::Matrix(row-1, col);
   for (int i = 0; i < row-1; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
-  EXPECT_THROW(secondMatrix.calc_complements(), std::out_of_range);
+  EXPECT_THROW(secondMatrix.CalcComplements(), std::out_of_range);
 }
 
 TEST(Except, test7) {
@@ -1068,13 +1066,13 @@ TEST(Except, test7) {
                              {3.01, 2.01, 3.01, 2.01, 3.01},
                              {3.01, 2.01, 3.01, 2.01, 3.01},
                              {3.01, 2.01, 3.01, 2.01, 3.01}};
-  S21Matrix secondMatrix = S21Matrix(row-1, col);
+  TL::Matrix secondMatrix = TL::Matrix(row-1, col);
   for (int i = 0; i < row-1; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
-  EXPECT_THROW(secondMatrix.determinant(), std::out_of_range);
+  EXPECT_THROW(secondMatrix.Determinant(), std::out_of_range);
 }
 
 TEST(Except, test8) {
@@ -1084,11 +1082,11 @@ TEST(Except, test8) {
                              {3.01, 2.01, 3.01, 2.01, 3.01},
                              {3.01, 2.01, 3.01, 2.01, 3.01},
                              {3.01, 2.01, 3.01, 2.01, 3.01}};
-  S21Matrix secondMatrix = S21Matrix(row-1, col);
+  TL::Matrix secondMatrix = TL::Matrix(row-1, col);
   for (int i = 0; i < row-1; i++) {
     for (int j = 0; j < col; j++) {
-      secondMatrix.setValue(second[i][j], i, j);
+      secondMatrix.set_value(second[i][j], i, j);
     }
   }
-  EXPECT_THROW(secondMatrix.inverse_matrix(), std::out_of_range);
+  EXPECT_THROW(secondMatrix.InverseMatrix(), std::out_of_range);
 }
